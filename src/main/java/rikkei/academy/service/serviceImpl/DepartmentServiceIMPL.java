@@ -1,18 +1,19 @@
-package rikkei.academy.service.department;
+package rikkei.academy.service.serviceImpl;
 
 import org.springframework.stereotype.Service;
 import rikkei.academy.model.Department;
-import rikkei.academy.repository.IDepartmentRepository;
+import rikkei.academy.repository.DepartmentRepository;
+import rikkei.academy.service.DepartmentService;
 
 import java.util.List;
 import java.util.Optional;
 
 
 @Service
-public class DepartmentService implements IDepartmentService {
-    private final IDepartmentRepository departmentRepository;
+public class DepartmentServiceIMPL implements DepartmentService {
+    private final DepartmentRepository departmentRepository;
 
-    public DepartmentService(IDepartmentRepository departmentRepository) {
+    public DepartmentServiceIMPL(DepartmentRepository departmentRepository) {
         this.departmentRepository = departmentRepository;
     }
 

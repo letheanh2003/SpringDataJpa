@@ -2,19 +2,21 @@ package rikkei.academy.dto;
 
 import rikkei.academy.model.Department;
 import rikkei.academy.model.Role;
+
+import java.util.List;
 import java.util.Set;
 
 public class EmployeeDTO {
     private Long id;
     private String name;
     private String email;
-    private Department departmentId;
-    private Set<Role> roles;
+    private String departmentId;
+    private List<String> roles;
 
     public EmployeeDTO() {
     }
 
-    public EmployeeDTO(Long id, String name, String email, Department departmentId, Set<Role> roles) {
+    public EmployeeDTO(Long id, String name, String email, String departmentId, List<String> roles) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -46,19 +48,19 @@ public class EmployeeDTO {
         this.email = email;
     }
 
-    public Department getDepartmentId() {
+    public String getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(Department departmentId) {
+    public void setDepartmentId(String departmentId) {
         this.departmentId = departmentId;
     }
 
-    public Set<Role> getRoles() {
+    public List<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<String> roles) {
         this.roles = roles;
     }
 }

@@ -1,18 +1,19 @@
-package rikkei.academy.service.role;
+package rikkei.academy.service.serviceImpl;
 
 import org.springframework.stereotype.Service;
 import rikkei.academy.model.Role;
-import rikkei.academy.repository.IRoleRepository;
+import rikkei.academy.repository.RoleRepository;
+import rikkei.academy.service.RoleService;
 
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RoleService implements IRoleService {
-    private final IRoleRepository roleRepository;
+public class RoleServiceIMPL implements RoleService {
+    private final RoleRepository roleRepository;
 
-    public RoleService(IRoleRepository roleRepository) {
+    public RoleServiceIMPL(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 

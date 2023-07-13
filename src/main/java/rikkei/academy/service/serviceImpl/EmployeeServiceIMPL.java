@@ -1,4 +1,4 @@
-package rikkei.academy.service.employee;
+package rikkei.academy.service.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -7,15 +7,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import rikkei.academy.model.Employee;
-import rikkei.academy.repository.IEmployeeRepository;
+import rikkei.academy.repository.EmployeeRepository;
+import rikkei.academy.service.EmployeeService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EmployeeService implements IEmployeeService {
-    @Autowired
-    private IEmployeeRepository employeeRepository;
+public class EmployeeServiceIMPL implements EmployeeService {
+
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeServiceIMPL(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     @Override
     public List<Employee> findAll() {
@@ -39,18 +44,16 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public Page<Employee> findAll(Pageable pageable) {
-        pageable = PageRequest.of(pageable.getPageNumber(),5,Sort.by("name"));
         return employeeRepository.findAll(pageable);
     }
 
     @Override
     public Page<Employee> findAllByName(String name, Pageable pageable) {
-        pageable = PageRequest.of(pageable.getPageNumber(),5,Sort.by("name"));
         return employeeRepository.findAllByName(name, pageable);
     }
 
     @Override
-    public boolean existsByEmail(String email) {
+    public boolean checkEmail(String email) {
         return employeeRepository.existsByEmail(email);
     }
 

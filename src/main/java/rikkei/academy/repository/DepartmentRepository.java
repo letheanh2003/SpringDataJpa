@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface IDepartmentRepository extends JpaRepository<Department,Long> {
+public interface DepartmentRepository extends JpaRepository<Department, Long> {
     Department findByName(String name);
+
 }

@@ -5,9 +5,8 @@ import org.springframework.stereotype.Repository;
 import rikkei.academy.model.Role;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Repository
 @Transactional
-public interface IRoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 }

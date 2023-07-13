@@ -1,17 +1,26 @@
-package rikkei.academy.service.employee;
+package rikkei.academy.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import rikkei.academy.model.Employee;
-import rikkei.academy.service.IGenericService;
 
+import java.util.List;
 import java.util.Optional;
 
-public interface IEmployeeService extends IGenericService<Employee,Long> {
+public interface EmployeeService {
     Page<Employee> findAll(Pageable pageable);
+
     Page<Employee> findAllByName(String name, Pageable pageable);
-    boolean existsByEmail(String email);
+
+    boolean checkEmail(String email);
+
     Optional<Employee> findByEmail(String email);
 
+    List<Employee> findAll();
 
+    void save(Employee employee);
+
+    Optional<Employee> findById(Long id);
+
+    void deleteById(Long id);
 }

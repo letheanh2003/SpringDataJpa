@@ -1,7 +1,5 @@
 package rikkei.academy.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -11,8 +9,9 @@ import rikkei.academy.dto.EmployeeDTO;
 import rikkei.academy.mapper.EmployeeMapper;
 import rikkei.academy.model.Department;
 import rikkei.academy.model.Employee;
-import rikkei.academy.service.department.IDepartmentService;
-import rikkei.academy.service.employee.IEmployeeService;
+import rikkei.academy.service.DepartmentService;
+import rikkei.academy.service.EmployeeService;
+import rikkei.academy.service.RoleService;
 
 import java.util.Optional;
 
@@ -21,21 +20,14 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class EmployeeController {
 
-    private IEmployeeService employeeService;
-    private IDepartmentService departmentService;
+    private final EmployeeService employeeService;
+    private final DepartmentService departmentService;
+    private final EmployeeMapper employeeMapper;
 
-    private EmployeeMapper employeeMapper;
 
-    @Autowired
-    public EmployeeController(IEmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService, DepartmentService departmentService, EmployeeMapper employeeMapper) {
         this.employeeService = employeeService;
-    }
-
-    public EmployeeController(IDepartmentService departmentService) {
         this.departmentService = departmentService;
-    }
-
-    public EmployeeController(EmployeeMapper employeeMapper) {
         this.employeeMapper = employeeMapper;
     }
 
@@ -50,15 +42,15 @@ public class EmployeeController {
         Page<EmployeeDTO> employeeDTOS = employees.map(employeeMapper::toDto);
         return new ResponseEntity<>(employeeDTOS, HttpStatus.OK);
     }
-
-
     @PostMapping("/employee")
-    public ResponseEntity<?> create(@RequestBody EmployeeDTO employeeDto) {
-        if (employeeService.existsByEmail(employeeDto.getEmail())) {
-            return new ResponseEntity<>("email existed, please try again!", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> create(@RequestBody Employee employee) {
+        boolean checkEmail = employeeService.checkEmail(employee.getEmail());
+        if (checkEmail) {
+            return new ResponseEntity<>("email existed, please try again!", HttpStatus.FAILED_DEPENDENCY);
         }
-        employeeService.save(employeeMapper.toEntity(employeeDto));
-        return new ResponseEntity<>(employeeDto, HttpStatus.CREATED);
+        employeeService.save(employee);
+        EmployeeDTO employeeDto = employeeMapper.toDto(employee);
+        return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
 
     @PutMapping("/employee")
@@ -67,7 +59,7 @@ public class EmployeeController {
         if (employeeByEmail.isPresent() && employeeByEmail.get().getId() != employeeDTO.getId()) {
             return new ResponseEntity<>("email existed, please try again! ", HttpStatus.BAD_REQUEST);
         } else {
-            Department department = departmentService.findByName(employeeDTO.getDepartmentId().getName());
+            Department department = departmentService.findByName(employeeDTO.getDepartmentId());
             Optional<Employee> employeeUpdate = employeeService.findById(employeeDTO.getId());
             employeeUpdate.get().setDepartment(department);
             employeeUpdate.get().setName(employeeDTO.getName());
